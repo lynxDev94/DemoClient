@@ -43,7 +43,7 @@ export function VisitSection({ clinic }: { clinic: Clinic }) {
       </p>
       <p className="mt-3 font-serif text-4xl tracking-tight text-brand">{clinic.phone}</p>
       {clinic.email ? <p className="mt-2 text-muted-foreground">{clinic.email}</p> : null}
-      <HoursList hours={clinic.hours} className="mt-6" />
+      {clinic.hours.length > 0 ? <HoursList hours={clinic.hours} className="mt-6" /> : null}
       <PhoneButton phone={clinic.phone} className="mt-8 w-full" />
     </div>
   );

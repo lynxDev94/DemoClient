@@ -5,7 +5,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import type { Clinic } from "@/clinics/types";
 import { Container } from "@/components/site/container";
 import { Logo } from "@/components/site/logo";
-import { clinicPath, serviceId, telHref } from "@/lib/format";
+import { clinicNav, clinicPath, serviceId, telHref } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { navIn } from "@/lib/motion";
 
@@ -65,7 +65,7 @@ export function Footer({ clinic }: { clinic: Clinic }) {
             {labels.footer.explore}
           </p>
           <ul className="mt-4 space-y-2.5 text-sm">
-            {labels.nav.map((item) => (
+            {clinicNav(clinic).map((item) => (
               <li key={item.href || "home"}>
                 <Link
                   href={clinicPath(clinic.slug, item.href)}
@@ -113,14 +113,16 @@ export function Footer({ clinic }: { clinic: Clinic }) {
               </p>
             ) : null}
           </address>
-          <dl className="mt-5 space-y-1.5 text-sm text-primary-foreground/80">
-            {clinic.hours.map((row) => (
-              <div key={row.days} className="flex justify-between gap-4">
-                <dt>{row.days}</dt>
-                <dd>{row.time}</dd>
-              </div>
-            ))}
-          </dl>
+          {clinic.hours.length > 0 ? (
+            <dl className="mt-5 space-y-1.5 text-sm text-primary-foreground/80">
+              {clinic.hours.map((row) => (
+                <div key={row.days} className="flex justify-between gap-4">
+                  <dt>{row.days}</dt>
+                  <dd>{row.time}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : null}
         </div>
       </Container>
       <div className="border-t border-white/10">

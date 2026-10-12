@@ -25,7 +25,7 @@ Multi-clinic veterinary website template for small Lithuanian clinics. One Next.
 
 ## Clinic configs
 
-`Clinic` is defined in `clinics/types.ts`: slug, `published`, name, tagline, phone, optional email, address, map embed, optional `locationPhoto` (the building, shown on the contact page), hours, about (text, optional founded year, photos, optional `background` for the home about block, optional `pagePhoto` for the Apie page), optional `servicesPhoto` for the Paslaugos page, services, specialists, prices, reviews, optional Google rating, brand colors, optional socials.
+`Clinic` is defined in `clinics/types.ts`: slug, `published`, name, tagline, phone, optional email, address, map embed, optional `locationPhoto` (the building, shown on the contact page), hours, about (text, optional founded year, photos, optional `background` for the home about block, optional `pagePhoto` for the Apie page), optional `servicesPhoto` for the Paslaugos page, services, specialists, prices, reviews, optional Google rating, optional `showRating`, optional `googlePlaceId`, brand colors, optional `brand.logo`, optional `brand.logoStyle` (`badge` or `plain`, default `badge`), optional socials, optional `showSpecialists` (false hides the specialists section and nav link), optional `pricesNote` (one line on the prices page when there are no price rows). A photo is a public path or `{ src, focus }`. `focus` is a CSS `object-position`, for example `center 30%`.
 
 Each clinic file exports `const clinic: Clinic`. Next.js cannot bundle a fully dynamic import path, so `clinics/index.ts` maps each slug to a static loader. Add a clinic by editing that map; `getClinic` and `getAllClinics` read only the registry. `brandStyle` turns `brand.primary` and `brand.accent` into CSS variables.
 
@@ -41,6 +41,12 @@ Each clinic file exports `const clinic: Clinic`. Next.js cannot bundle a fully d
 ## Photos
 
 Shared stock stays in `public/photos/`. Photos for one clinic go in `public/clinics/<slug>/`. Configs hold the public paths (`about.photos`, `specialists[].photo`, optional `locationPhoto`). If `public/clinics/<slug>/` has files, use those. Otherwise use stock. Render them with `components/site/photo.tsx` (`next/image`, `fill`). Do not import image files from `clinics/` or hardcode a photo path inside a section component.
+
+A photo may be a string or `{ src, focus }`. `focus` is the CSS `object-position` (`center 30%` keeps a face in frame). The hero source (`about.photos[0]`) must be at least 1200px wide. Every other photo must be at least 800px wide. `lib/photo-fit.ts` swaps anything smaller for a sharp stock photo and logs the swap. Prefer a sharp stock photo over a blurry clinic photo.
+
+## Logo
+
+`brand.logoStyle` is `badge` or `plain`. The default is `badge`: a white rounded container with padding and a hairline border, so a logo with a white or opaque background looks intentional on the cream header and the dark footer. `plain` draws the file alone. The image keeps its aspect ratio: max-height 44px from the `sm` breakpoint and 36px below it, width auto. Do not stretch it. If a square or detailed logo is not readable at that size, say so in the QA report.
 
 ## Animation
 
@@ -78,8 +84,12 @@ Use only the data the user provides. Never invent facts: no founding year, award
 - Prices: no numbers. Use `Kaina - pagal konsultaciją`.
 - Specialists: placeholder `Gydytojas veterinaras`, no names, no photos. Hide the specialists stat.
 - Texts: natural Lithuanian, short, neutral. The hero one-liner and the About text must differ. No promises (no `skubi pagalba`, `atsilieps žmogus`, and similar) unless the user says so.
-- Photos: use files in `public/clinics/[slug]/` when that folder has any. Otherwise use stock photos from `public/photos/`.
+- Photos: use files in `public/clinics/[slug]/` when that folder has any. Otherwise use stock photos from `public/photos/`. Hero files must be at least 1200px wide and other photos at least 800px wide. Set `focus` when a crop would cut a face or the building sign. Prefer a sharp stock photo over a blurry clinic photo.
 - Colours: a calm palette different from the other clinics.
 - `published: false` until the clinic is a paying customer.
 
 After creating the config: run the dev server, open `/[slug]` and every subpage, fix errors, then list every text you wrote yourself so the user can check it.
+
+## Visual QA
+
+Required after creating or editing a clinic. Run `npm run shots -- <slug>`. Playwright saves `/<slug>` and every subpage at 1440px and 390px to `tmp-agent/shots/` (gitignored). Look at every screenshot before calling the work done. Fix logos that clash with the header, cropped heads or faces, blurry or pixelated images, empty sections, text overflow, broken Lithuanian letters (ą č ę ė į š ų ū ž), and buttons that wrap badly on mobile. Report what you fixed. Do not say the clinic is done until the shots look clean.

@@ -23,6 +23,7 @@ export default async function PricesPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  const noPrices = clinic.prices.length === 0;
 
   return (
     <>
@@ -31,8 +32,8 @@ export default async function PricesPage({
           <SectionHeading
             as="h1"
             eyebrow={labels.nav[4].label}
-            title={labels.pages.pricesTitle}
-            text={labels.pages.pricesText}
+            title={noPrices ? (clinic.pricesNote ?? labels.pages.pricesEmpty) : labels.pages.pricesTitle}
+            text={noPrices ? undefined : labels.pages.pricesText}
           />
           <div className="mt-12">
             <PriceList clinic={clinic} />

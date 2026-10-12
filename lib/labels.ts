@@ -39,6 +39,7 @@ export const labels = {
     ],
     reviewsEyebrow: "Atsiliepimai",
     reviewsTitle: "Ką sako šeimininkai",
+    reviewOnGoogle: "Palikite atsiliepimą Google",
     teamEyebrow: "Specialistai",
     teamTitle: "Komanda, kurią augintinis atpažįsta",
     teamText: "Gydytojai ir felčeriai, kurie priima jūsų augintinį.",
@@ -60,6 +61,7 @@ export const labels = {
     pricesEmpty: "Kainoraštis derinamas telefonu.",
     contactTitle: "Užsukite arba paskambinkite",
     contactText: "Darbo laikas, adresas ir žemėlapis. Vizitus deriname telefonu.",
+    contactTextNoHours: "Adresas ir žemėlapis.",
     hours: "Darbo laikas",
     address: "Adresas",
     phone: "Telefonas",
@@ -94,5 +96,6 @@ export const labels = {
     team: "Specialistai",
     services: "Paslaugos",
     rating: "Google įvertinimas",
+    reviewCount: "Atsiliepimai Google",
   },
 } as const;

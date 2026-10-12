@@ -17,6 +17,7 @@ export function TeamSection({
   limit?: number;
   intro?: boolean;
 }) {
+  if (clinic.showSpecialists === false) return null;
   const people = typeof limit === "number" ? clinic.specialists.slice(0, limit) : clinic.specialists;
   if (people.length === 0) return null;
 

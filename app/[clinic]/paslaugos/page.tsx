@@ -6,6 +6,7 @@ import { CtaBanner } from "@/components/site/cta-banner";
 import { Photo } from "@/components/site/photo";
 import { SectionHeading } from "@/components/site/section-heading";
 import { labels } from "@/lib/labels";
+import { asPhoto } from "@/lib/photos";
 import { requireClinic } from "@/lib/load";
 
 export async function generateMetadata({
@@ -24,6 +25,7 @@ export default async function ServicesPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  const servicesPhoto = asPhoto(clinic.servicesPhoto);
 
   return (
     <>
@@ -35,13 +37,14 @@ export default async function ServicesPage({
             title={labels.pages.servicesTitle}
             text={labels.pages.servicesText}
           />
-          {clinic.servicesPhoto ? (
+          {servicesPhoto ? (
             <div
               className="relative mt-10 overflow-hidden rounded-[28px] bg-secondary"
               style={{ aspectRatio: "3 / 2" }}
             >
               <Photo
-                src={clinic.servicesPhoto}
+                src={servicesPhoto.src}
+                focus={servicesPhoto.focus}
                 alt={clinic.name}
                 sizes="(min-width: 1024px) 1100px, 100vw"
               />

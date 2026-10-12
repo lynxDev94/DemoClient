@@ -10,6 +10,12 @@ export function clinicPath(slug: string, href = "") {
   return `/${slug}${href}`;
 }
 
+export function clinicNav(clinic: Clinic) {
+  return labels.nav.filter(
+    (item) => clinic.showSpecialists !== false || item.href !== "/specialistai",
+  );
+}
+
 export function paragraphs(text: string) {
   return text
     .split(/\n\n+/)
@@ -47,6 +53,19 @@ export function decimalLt(value: number) {
     minimumFractionDigits: Number.isInteger(value) ? 0 : 1,
     maximumFractionDigits: 1,
   });
+}
+
+export function googleMapsUrl(placeId: string, name: string) {
+  const params = new URLSearchParams({
+    api: "1",
+    query: name,
+    query_place_id: placeId,
+  });
+  return `https://www.google.com/maps/search/?${params.toString()}`;
+}
+
+export function googleReviewUrl(placeId: string) {
+  return `https://search.google.com/local/writereview?placeid=${encodeURIComponent(placeId)}`;
 }
 
 export function reviewsWord(count: number) {
@@ -101,17 +120,24 @@ export function clinicStats(clinic: Clinic) {
   if (clinic.about.foundedYear) {
     stats.push({ value: String(clinic.about.foundedYear), label: labels.stats.founded });
   }
-  const placeholderTeam =
-    clinic.specialists.length > 0 &&
-    clinic.specialists.every((person) => person.name === "Gydytojas veterinaras" && !person.photo);
-  if (!placeholderTeam) {
+  const placeholderTeam = clinic.specialists.every(
+    (person) => person.name === "Gydytojas veterinaras" && !person.photo,
+  );
+  if (clinic.showSpecialists !== false && clinic.specialists.length > 0 && !placeholderTeam) {
     stats.push({ value: String(clinic.specialists.length), label: labels.stats.team });
   }
   if (clinic.googleRating) {
-    stats.push({
-      value: decimalLt(clinic.googleRating.score),
-      label: `Google · ${clinic.googleRating.count}`,
-    });
+    stats.push(
+      clinic.showRating === false
+        ? {
+            value: String(clinic.googleRating.count),
+            label: labels.stats.reviewCount,
+          }
+        : {
+            value: decimalLt(clinic.googleRating.score),
+            label: `Google · ${clinic.googleRating.count}`,
+          },
+    );
   }
   stats.push({ value: String(clinic.services.length), label: labels.stats.services });
   return stats;

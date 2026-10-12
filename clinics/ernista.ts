@@ -18,7 +18,7 @@ export const clinic: Clinic = {
   ],
   about: {
     photos: ["/clinics/ernista/dog-dancing.png"],
-    background: "/photos/cat-bg.avif",
+    background: { src: "/photos/cat-bg.avif", focus: "center 45%" },
     pagePhoto: "/photos/about-page.jpg",
     text: "Ernista priima augintinius Savanorių prospekte. Klinikoje atliekama apžiūra, vakcinacija, vidaus ligų gydymas ir chirurgija.\n\nVizitus deriname telefonu.",
   },
@@ -92,6 +92,7 @@ export const clinic: Clinic = {
     },
   ],
   googleRating: { score: 4.7, count: 346 },
+  googlePlaceId: "ChIJN1luUg4i50YRttxlJNYLwgo",
   brand: { primary: "#243044", accent: "#6F8F7B" },
   copy: {
     servicesText: "Apžiūra, vakcinacija, vidaus ligos ir chirurgija.",

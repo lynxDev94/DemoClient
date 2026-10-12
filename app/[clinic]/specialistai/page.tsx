@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getClinic } from "@/clinics";
 import { TeamSection } from "@/components/home/team-section";
 import { Container } from "@/components/site/container";
@@ -23,6 +24,7 @@ export default async function SpecialistsPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  if (clinic.showSpecialists === false) notFound();
 
   return (
     <>

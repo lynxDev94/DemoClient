@@ -8,11 +8,12 @@ import { PhoneButton } from "@/components/site/phone-button";
 import { Photo } from "@/components/site/photo";
 import type { Clinic } from "@/clinics/types";
 import { clinicPath, clinicStats, paragraphs } from "@/lib/format";
+import { asPhoto } from "@/lib/photos";
 import { labels } from "@/lib/labels";
 import { cn } from "@/lib/utils";
 
 export function Hero({ clinic }: { clinic: Clinic }) {
-  const photo = clinic.about.photos[0];
+  const photo = asPhoto(clinic.about.photos[0]);
   const intro = clinic.lead !== undefined ? clinic.lead : paragraphs(clinic.about.text)[0];
   const stats = clinicStats(clinic);
   const eyebrow = clinic.about.foundedYear
@@ -51,7 +52,13 @@ export function Hero({ clinic }: { clinic: Clinic }) {
           {photo ? (
             <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-secondary shadow-[0_30px_80px_-48px_rgba(30,58,50,0.7)]">
               <HeroPhoto className="absolute inset-0">
-                <Photo src={photo} alt={clinic.name} priority sizes="(min-width: 1024px) 46vw, 100vw" />
+                <Photo
+                  src={photo.src}
+                  focus={photo.focus}
+                  alt={clinic.name}
+                  priority
+                  sizes="(min-width: 1024px) 46vw, 100vw"
+                />
               </HeroPhoto>
             </div>
           ) : null}

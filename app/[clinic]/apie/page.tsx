@@ -6,6 +6,7 @@ import { CtaBanner } from "@/components/site/cta-banner";
 import { Photo } from "@/components/site/photo";
 import { SectionHeading } from "@/components/site/section-heading";
 import { clinicStats, paragraphs } from "@/lib/format";
+import { asPhoto } from "@/lib/photos";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
 import { cn } from "@/lib/utils";
@@ -28,7 +29,9 @@ export default async function AboutPage({
   const clinic = await requireClinic((await params).clinic);
   const copy = paragraphs(clinic.about.text);
   const stats = clinicStats(clinic);
-  const photos = clinic.about.pagePhoto ? [clinic.about.pagePhoto] : clinic.about.photos;
+  const photos = (clinic.about.pagePhoto ? [clinic.about.pagePhoto] : clinic.about.photos)
+    .map((photo) => asPhoto(photo))
+    .filter((photo): photo is NonNullable<typeof photo> => photo !== undefined);
 
   return (
     <>
@@ -59,15 +62,20 @@ export default async function AboutPage({
           ) : null}
           {photos.length > 0 ? (
             <Stagger className="mt-14 grid gap-4 sm:grid-cols-2">
-              {photos.map((src, index) => (
-                <StaggerItem key={src} className={index === 0 ? "sm:col-span-2" : undefined}>
+              {photos.map((photo, index) => (
+                <StaggerItem key={photo.src} className={index === 0 ? "sm:col-span-2" : undefined}>
                   <div
                     className={cn(
                       "relative overflow-hidden rounded-[28px] bg-secondary",
                       index === 0 ? "aspect-[16/9]" : "aspect-[4/3]",
                     )}
                   >
-                    <Photo src={src} alt={clinic.name} sizes={index === 0 ? "100vw" : "(min-width: 640px) 50vw, 100vw"} />
+                    <Photo
+                      src={photo.src}
+                      focus={photo.focus}
+                      alt={clinic.name}
+                      sizes={index === 0 ? "100vw" : "(min-width: 640px) 50vw, 100vw"}
+                    />
                   </div>
                 </StaggerItem>
               ))}

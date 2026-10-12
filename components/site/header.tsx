@@ -9,7 +9,7 @@ import type { Clinic } from "@/clinics/types";
 import { Container } from "@/components/site/container";
 import { Logo } from "@/components/site/logo";
 import { PhoneButton } from "@/components/site/phone-button";
-import { clinicPath } from "@/lib/format";
+import { clinicNav, clinicPath } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { navIn } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -34,7 +34,7 @@ function NavLinks({
 
   return (
     <ul className={className}>
-      {labels.nav.map((item) => {
+      {clinicNav(clinic).map((item) => {
         const active = isCurrent(current, item.href);
         return (
           <li key={item.href || "home"}>

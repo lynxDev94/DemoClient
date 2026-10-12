@@ -13,6 +13,7 @@ import { labels } from "@/lib/labels";
 
 export function PriceList({ clinic }: { clinic: Clinic }) {
   if (clinic.prices.length === 0) {
+    if (clinic.pricesNote) return null;
     return (
       <div className="rounded-[28px] border border-border bg-card p-8">
         <p className="text-lg text-muted-foreground">{labels.pages.pricesEmpty}</p>

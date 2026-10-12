@@ -6,15 +6,16 @@ import type { Clinic } from "@/clinics/types";
 import { Container } from "@/components/site/container";
 import { Photo } from "@/components/site/photo";
 import { clinicPath, paragraphs } from "@/lib/format";
+import { asPhoto } from "@/lib/photos";
 import { labels } from "@/lib/labels";
 import { fromLeftFar, fromRightFar } from "@/lib/motion";
 
 export function AboutSplit({ clinic }: { clinic: Clinic }) {
   const reduce = useReducedMotion();
   const copy = paragraphs(clinic.about.text);
-  const background = clinic.about.background;
-  const primary = background ? undefined : (clinic.about.photos[1] ?? clinic.about.photos[0]);
-  const secondary = background ? undefined : clinic.about.photos[2];
+  const background = asPhoto(clinic.about.background);
+  const primary = background ? undefined : asPhoto(clinic.about.photos[1] ?? clinic.about.photos[0]);
+  const secondary = background ? undefined : asPhoto(clinic.about.photos[2]);
   if (!primary && !background && copy.length === 0) return null;
 
   const story = (
@@ -46,10 +47,10 @@ export function AboutSplit({ clinic }: { clinic: Clinic }) {
     const image = (
       <div className="relative min-h-72 lg:min-h-[560px]">
         <Photo
-          src={background}
+          src={background.src}
+          focus={background.focus}
           alt=""
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-[center_45%]"
         />
       </div>
     );
@@ -88,11 +89,11 @@ export function AboutSplit({ clinic }: { clinic: Clinic }) {
   const media = primary ? (
     <div className="relative">
       <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-secondary">
-        <Photo src={primary} alt={clinic.name} sizes="(min-width: 1024px) 40vw, 100vw" />
+        <Photo src={primary.src} focus={primary.focus} alt={clinic.name} sizes="(min-width: 1024px) 40vw, 100vw" />
       </div>
       {secondary ? (
         <div className="absolute right-6 bottom-6 hidden aspect-square w-36 overflow-hidden rounded-[24px] border-4 border-background shadow-lg sm:block md:w-44">
-          <Photo src={secondary} alt="" sizes="180px" />
+          <Photo src={secondary.src} focus={secondary.focus} alt="" sizes="180px" />
         </div>
       ) : null}
     </div>

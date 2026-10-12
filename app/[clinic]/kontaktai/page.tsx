@@ -7,6 +7,7 @@ import { PhoneButton } from "@/components/site/phone-button";
 import { Photo } from "@/components/site/photo";
 import { SectionHeading } from "@/components/site/section-heading";
 import { telHref } from "@/lib/format";
+import { asPhoto } from "@/lib/photos";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
 
@@ -26,6 +27,7 @@ export default async function ContactPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  const locationPhoto = asPhoto(clinic.locationPhoto);
   const socials = [
     clinic.socials?.facebook ? { href: clinic.socials.facebook, label: "Facebook" } : null,
     clinic.socials?.instagram ? { href: clinic.socials.instagram, label: "Instagram" } : null,
@@ -38,19 +40,22 @@ export default async function ContactPage({
           as="h1"
           eyebrow={labels.nav[5].label}
           title={labels.pages.contactTitle}
-          text={labels.pages.contactText}
+          text={
+            clinic.hours.length > 0 ? labels.pages.contactText : labels.pages.contactTextNoHours
+          }
         />
-        {clinic.locationPhoto ? (
+        {locationPhoto ? (
           <div className="relative mt-10 aspect-[1805/697] overflow-hidden rounded-[32px] border border-border bg-secondary">
             <Photo
-              src={clinic.locationPhoto}
+              src={locationPhoto.src}
+              focus={locationPhoto.focus}
               alt={clinic.address}
               sizes="(min-width: 1024px) 960px, 100vw"
             />
           </div>
         ) : null}
         <div
-          className={`grid items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] ${clinic.locationPhoto ? "mt-8" : "mt-12"}`}
+          className={`grid items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] ${locationPhoto ? "mt-8" : "mt-12"}`}
         >
           <div className="rounded-[32px] border border-border/80 bg-card p-7 shadow-[0_24px_50px_-40px_rgba(30,58,50,0.5)] md:p-9">
             <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
@@ -81,12 +86,14 @@ export default async function ContactPage({
                 </a>
               </div>
             ) : null}
-            <div className="mt-8">
-              <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                {labels.pages.hours}
-              </p>
-              <HoursList hours={clinic.hours} className="mt-2" />
-            </div>
+            {clinic.hours.length > 0 ? (
+              <div className="mt-8">
+                <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
+                  {labels.pages.hours}
+                </p>
+                <HoursList hours={clinic.hours} className="mt-2" />
+              </div>
+            ) : null}
             {socials.length > 0 ? (
               <div className="mt-6 flex gap-3">
                 {socials.map((social) => (

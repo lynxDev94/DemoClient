@@ -12,6 +12,27 @@ export function Logo({
   light?: boolean;
   className?: string;
 }) {
+  if (clinic.brand.logo) {
+    const badge = (clinic.brand.logoStyle ?? "badge") === "badge";
+    return (
+      <span
+        className={cn(
+          "inline-flex items-center",
+          badge && "rounded-xl border border-black/10 bg-white px-2 py-1",
+          className,
+        )}
+      >
+        <Image
+          src={clinic.brand.logo}
+          alt={clinic.name}
+          width={220}
+          height={168}
+          className="h-9 w-auto max-h-9 object-contain sm:h-11 sm:max-h-11"
+        />
+      </span>
+    );
+  }
+
   return (
     <span className={cn("flex items-center gap-3", className)}>
       <span
@@ -20,11 +41,7 @@ export function Logo({
           light ? "bg-white/15 text-primary-foreground" : "bg-brand text-primary-foreground",
         )}
       >
-        {clinic.brand.logo ? (
-          <Image src={clinic.brand.logo} alt="" width={28} height={28} className="size-7 object-contain" />
-        ) : (
-          <PawPrint className="size-5" aria-hidden="true" />
-        )}
+        <PawPrint className="size-5" aria-hidden="true" />
       </span>
       <span
         className={cn(
