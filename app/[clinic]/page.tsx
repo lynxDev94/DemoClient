@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { getClinic } from "@/clinics";
 import { AboutSplit } from "@/components/home/about-split";
+import { FactsStrip } from "@/components/home/facts-strip";
 import { Hero } from "@/components/home/hero";
 import { ReviewsSection } from "@/components/home/reviews-section";
-import { ServicesSection } from "@/components/home/services-section";
-import { TeamSection } from "@/components/home/team-section";
-import { VisitSection } from "@/components/home/visit-section";
+import { ServicesIndex } from "@/components/home/services-index";
+import { Symptoms } from "@/components/home/symptoms";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
@@ -26,15 +26,14 @@ export default async function ClinicHome({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
-
   return (
     <>
       <Hero clinic={clinic} />
-      <ServicesSection clinic={clinic} />
+      <FactsStrip clinic={clinic} />
+      <ServicesIndex clinic={clinic} />
+      <Symptoms clinic={clinic} />
       <AboutSplit clinic={clinic} />
-      <VisitSection clinic={clinic} />
       <ReviewsSection clinic={clinic} />
-      <TeamSection clinic={clinic} limit={4} />
       <CtaBanner clinic={clinic} />
     </>
   );

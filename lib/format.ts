@@ -10,10 +10,63 @@ export function clinicPath(slug: string, href = "") {
   return `/${slug}${href}`;
 }
 
+const placeholderSpecialist = "Gydytojas veterinaras";
+
+export function isPlaceholderSpecialist(person: { name: string; photo?: unknown }) {
+  return person.name.trim() === placeholderSpecialist && !person.photo;
+}
+
+export function realSpecialists(clinic: Clinic) {
+  return clinic.specialists.filter((person) => !isPlaceholderSpecialist(person));
+}
+
+/** A detail page needs a lead and at least one block of body content. */
+export function serviceHasDetail(service: Clinic["services"][number]) {
+  const detail = service.detail;
+  const lead = detail?.lead?.trim() ?? "";
+  if (!lead) return false;
+  return Boolean(detail?.steps?.length || detail?.groups?.length || detail?.paragraphs?.length);
+}
+
+export function hasAboutPage(clinic: Clinic) {
+  if (paragraphs(clinic.about.text).length > 0) return true;
+  if ((clinic.values?.length ?? 0) > 0) return true;
+  if ((clinic.partners?.length ?? 0) > 0) return true;
+  return (clinic.team ?? []).some((person) => {
+    const name = person.name.trim();
+    return name.length > 0 && !name.includes("[Vardas");
+  });
+}
+
+export function hasPricesPage(clinic: Clinic) {
+  return clinic.prices.some((group) => group.items.length > 0);
+}
+
+export function hasSpecialistsPage(clinic: Clinic) {
+  return clinic.showSpecialists !== false && realSpecialists(clinic).length > 0;
+}
+
+const reviewLimit = 3;
+const reviewSoftMax = 280;
+
+/** Prefer reviews that fit a card. Longer ones fill only if there are not enough short ones. */
+export function reviewsToShow<T extends { text: string }>(reviews: T[]) {
+  const short = reviews.filter((review) => review.text.length <= reviewSoftMax);
+  const long = reviews.filter((review) => review.text.length > reviewSoftMax);
+  return [...short, ...long].slice(0, Math.min(reviewLimit, reviews.length));
+}
+
 export function clinicNav(clinic: Clinic) {
-  return labels.nav.filter(
-    (item) => clinic.showSpecialists !== false || item.href !== "/specialistai",
-  );
+  return labels.nav.filter((item) => {
+    if (item.href === "/apie" && !hasAboutPage(clinic)) return false;
+    if (item.href === "/specialistai" && !hasSpecialistsPage(clinic)) return false;
+    if (item.href === "/kainos" && !hasPricesPage(clinic)) return false;
+    return true;
+  });
+}
+
+export function serviceHref(slug: string, service: string) {
+  return `/${slug}/paslaugos/${service}`;
 }
 
 export function paragraphs(text: string) {
@@ -120,10 +173,7 @@ export function clinicStats(clinic: Clinic) {
   if (clinic.about.foundedYear) {
     stats.push({ value: String(clinic.about.foundedYear), label: labels.stats.founded });
   }
-  const placeholderTeam = clinic.specialists.every(
-    (person) => person.name === "Gydytojas veterinaras" && !person.photo,
-  );
-  if (clinic.showSpecialists !== false && clinic.specialists.length > 0 && !placeholderTeam) {
+  if (hasSpecialistsPage(clinic)) {
     stats.push({ value: String(clinic.specialists.length), label: labels.stats.team });
   }
   if (clinic.googleRating) {

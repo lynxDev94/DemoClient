@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Newsreader, Outfit } from "next/font/google";
+import { Bricolage_Grotesque, Manrope } from "next/font/google";
 import { MotionRoot } from "@/components/motion/motion-root";
 import { labels } from "@/lib/labels";
 import "./globals.css";
 
-const outfit = Outfit({
+const outfit = Manrope({
   subsets: ["latin", "latin-ext"],
   variable: "--font-outfit",
 });
 
-const fraunces = Newsreader({
+const fraunces = Bricolage_Grotesque({
   subsets: ["latin", "latin-ext"],
   variable: "--font-fraunces",
 });

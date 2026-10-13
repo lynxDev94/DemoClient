@@ -26,42 +26,49 @@ export const clinic: Clinic = {
     ],
     text: "Beržų veterinarijos kliniką atidarėme 2014 metais Žirmūnuose. Norėjome vietos, kur augintinis nebūtų tik numeris kortelėje, o šeimininkas išeitų supratęs, kas vyksta.\n\nDirbame ramiai: pirmiausia apžiūra, tada aiškus planas ir kaina, ir tik tada gydymas. Šunis, kates ir smulkius gyvūnus priimame toje pačioje klinikoje.\n\nKomanda nedidelė sąmoningai. Taip gydytojas spėja prisiminti vardą, o jūs žinote, kam skambinti, kai kas nors ne taip.",
   },
+  serviceCategories: [{ id: "paslaugos", title: "Paslaugos" }],
   services: [
     {
+      slug: "profilaktines-apziuros",
       title: "Profilaktinės apžiūros",
-      description:
-        "Apžiūra nuo nosies iki uodegos, prevencinis planas ir ramus pokalbis apie tai, kas iš tiesų būtina.",
-      icon: "Stethoscope",
+      category: "paslaugos",
+      summary: "Apžiūra nuo nosies iki uodegos, prevencinis planas ir ramus pokalbis apie tai, kas iš tiesų būtina.",
+      showOnHome: true,
     },
     {
+      slug: "vakcinacija",
       title: "Vakcinacija",
-      description:
-        "Skiepai pagal amžių, gyvenimo būdą ir riziką. Primename, kada laikas kitam vizitui.",
-      icon: "Syringe",
+      category: "paslaugos",
+      summary: "Skiepai pagal amžių, gyvenimo būdą ir riziką. Primename, kada laikas kitam vizitui.",
+      showOnHome: true,
     },
     {
+      slug: "dantu-prieziura",
       title: "Dantų priežiūra",
-      description:
-        "Apnašų valymas, dantų rentgenas ir šalinimas su stebima nejautra.",
-      icon: "Toothbrush",
+      category: "paslaugos",
+      summary: "Apnašų valymas, dantų rentgenas ir šalinimas su stebima nejautra.",
+      showOnHome: true,
     },
     {
+      slug: "chirurgija",
       title: "Chirurgija",
-      description:
-        "Kastravimas, sterilizacija ir minkštųjų audinių operacijos su skausmo kontrole.",
-      icon: "Scissors",
+      category: "paslaugos",
+      summary: "Kastravimas, sterilizacija ir minkštųjų audinių operacijos su skausmo kontrole.",
+      featured: true,
     },
     {
+      slug: "diagnostika",
       title: "Diagnostika",
-      description:
-        "Laboratorija, echoskopija ir rentgenas vietoje, kad atsakymą gautumėte tą pačią dieną.",
-      icon: "ScanLine",
+      category: "paslaugos",
+      summary: "Laboratorija, echoskopija ir rentgenas vietoje, kad atsakymą gautumėte tą pačią dieną.",
+      showOnHome: true,
     },
     {
+      slug: "skubi-pagalba",
       title: "Skubi pagalba",
-      description:
-        "Ligos vizitai be ilgos registracijos darbo dienomis ir šeštadienį.",
-      icon: "Ambulance",
+      category: "paslaugos",
+      summary: "Ligos vizitai be ilgos registracijos darbo dienomis ir šeštadienį.",
+      showOnHome: true,
     },
   ],
   specialists: [

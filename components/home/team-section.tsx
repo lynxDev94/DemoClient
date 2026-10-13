@@ -4,7 +4,7 @@ import { Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Container } from "@/components/site/container";
 import { SectionHeading } from "@/components/site/section-heading";
 import { SpecialistCard } from "@/components/site/specialist-card";
-import { clinicPath } from "@/lib/format";
+import { clinicPath, realSpecialists } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { cn } from "@/lib/utils";
 
@@ -17,8 +17,9 @@ export function TeamSection({
   limit?: number;
   intro?: boolean;
 }) {
-  if (clinic.showSpecialists === false) return null;
-  const people = typeof limit === "number" ? clinic.specialists.slice(0, limit) : clinic.specialists;
+  const specialists = realSpecialists(clinic);
+  if (clinic.showSpecialists === false || specialists.length === 0) return null;
+  const people = typeof limit === "number" ? specialists.slice(0, limit) : specialists;
   if (people.length === 0) return null;
 
   return (
@@ -31,7 +32,7 @@ export function TeamSection({
             title={labels.home.teamTitle}
             text={labels.home.teamText}
           />
-          {limit && clinic.specialists.length > limit ? (
+          {limit && specialists.length > limit ? (
             <Link
               href={clinicPath(clinic.slug, "/specialistai")}
               className="text-sm font-medium text-accent transition-colors duration-200 hover:text-brand"

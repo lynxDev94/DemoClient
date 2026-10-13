@@ -26,42 +26,49 @@ export const clinic: Clinic = {
     ],
     text: "Pajūrio veterinariją Klaipėdos senamiestyje atidarėme 2018 metais. Norėjome klinikos, į kurią galima užsukti pakeliui iš pasivaikščiojimo, o ne važiuoti per visą miestą.\n\nPriimame šunis, kates ir smulkius gyvūnus. Prieš procedūrą visada pasakome, ką darysime ir kiek tai kainuos. Skubius atvejus stengiamės sutalpinti tą pačią dieną.\n\nJei gyvenate už miesto, paskambinkite prieš važiuodami — pasakysime, ar tą dieną dar turime vietos.",
   },
+  serviceCategories: [{ id: "paslaugos", title: "Paslaugos" }],
   services: [
     {
+      slug: "kasdienes-apziuros",
       title: "Kasdienės apžiūros",
-      description:
-        "Trumpa arba išsami apžiūra, priklausomai nuo to, kas neramina. Išeisite su planu, ne su spėlione.",
-      icon: "Stethoscope",
+      category: "paslaugos",
+      summary: "Trumpa arba išsami apžiūra, priklausomai nuo to, kas neramina. Išeisite su planu, ne su spėlione.",
+      showOnHome: true,
     },
     {
+      slug: "vakcinacija",
       title: "Vakcinacija",
-      description:
-        "Šuniukų, kačiukų ir suaugusių gyvūnų skiepai. Grafiką pritaikome pagal tai, kur augintinis būna.",
-      icon: "Syringe",
+      category: "paslaugos",
+      summary: "Šuniukų, kačiukų ir suaugusių gyvūnų skiepai. Grafiką pritaikome pagal tai, kur augintinis būna.",
+      showOnHome: true,
     },
     {
+      slug: "dantu-gydymas",
       title: "Dantų gydymas",
-      description:
-        "Apžiūra, valymas ir šalinimas. Nejautrą stebime visą procedūrą, o po jos paskambiname patys.",
-      icon: "Toothbrush",
+      category: "paslaugos",
+      summary: "Apžiūra, valymas ir šalinimas. Nejautrą stebime visą procedūrą, o po jos paskambiname patys.",
+      showOnHome: true,
     },
     {
+      slug: "chirurgija",
       title: "Chirurgija",
-      description:
-        "Sterilizacija, kastracija ir kitos minkštųjų audinių operacijos su aiškiu skausmo planu.",
-      icon: "Scissors",
+      category: "paslaugos",
+      summary: "Sterilizacija, kastracija ir kitos minkštųjų audinių operacijos su aiškiu skausmo planu.",
+      featured: true,
     },
     {
+      slug: "tyrimai-vietoje",
       title: "Tyrimai vietoje",
-      description:
-        "Kraujas, echoskopija ir rentgenas klinikoje. Dažniausiai atsakymą turime iki jums išeinant.",
-      icon: "Microscope",
+      category: "paslaugos",
+      summary: "Kraujas, echoskopija ir rentgenas klinikoje. Dažniausiai atsakymą turime iki jums išeinant.",
+      showOnHome: true,
     },
     {
+      slug: "skubi-pagalba",
       title: "Skubi pagalba",
-      description:
-        "Jei augintiniui bloga šiandien, skambinkite iš ryto. Paliekame laiko neplanuotiems vizitams.",
-      icon: "Ambulance",
+      category: "paslaugos",
+      summary: "Jei augintiniui bloga šiandien, skambinkite iš ryto. Paliekame laiko neplanuotiems vizitams.",
+      showOnHome: true,
     },
   ],
   specialists: [

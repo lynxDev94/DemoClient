@@ -5,6 +5,7 @@ import { TeamSection } from "@/components/home/team-section";
 import { Container } from "@/components/site/container";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { SectionHeading } from "@/components/site/section-heading";
+import { hasSpecialistsPage } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
 
@@ -15,7 +16,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const clinic = await getClinic((await params).clinic);
   if (!clinic) return { title: labels.notFound.title };
-  return { title: `${labels.nav[3].label} · ${clinic.name}`, description: clinic.tagline };
+  return { title: `${labels.nav[4].label} · ${clinic.name}`, description: clinic.tagline };
 }
 
 export default async function SpecialistsPage({
@@ -24,7 +25,7 @@ export default async function SpecialistsPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
-  if (clinic.showSpecialists === false) notFound();
+  if (!hasSpecialistsPage(clinic)) notFound();
 
   return (
     <>
@@ -32,7 +33,7 @@ export default async function SpecialistsPage({
         <Container>
           <SectionHeading
             as="h1"
-            eyebrow={labels.nav[3].label}
+            eyebrow={labels.nav[4].label}
             title={labels.pages.teamTitle}
             text={labels.pages.teamText}
           />

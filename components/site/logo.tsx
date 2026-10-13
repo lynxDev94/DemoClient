@@ -12,44 +12,40 @@ export function Logo({
   light?: boolean;
   className?: string;
 }) {
-  if (clinic.brand.logo) {
-    const badge = (clinic.brand.logoStyle ?? "badge") === "badge";
-    return (
-      <span
-        className={cn(
-          "inline-flex items-center",
-          badge && "rounded-xl border border-black/10 bg-white px-2 py-1",
-          className,
-        )}
-      >
-        <Image
-          src={clinic.brand.logo}
-          alt={clinic.name}
-          width={220}
-          height={168}
-          className="h-9 w-auto max-h-9 object-contain sm:h-11 sm:max-h-11"
-        />
-      </span>
-    );
-  }
-
+  const badge = (clinic.brand.logoStyle ?? "badge") === "badge";
   return (
     <span className={cn("flex items-center gap-3", className)}>
       <span
         className={cn(
-          "grid size-11 shrink-0 place-items-center rounded-2xl",
-          light ? "bg-white/15 text-primary-foreground" : "bg-brand text-primary-foreground",
+          "relative h-[46px] w-[46px] shrink-0 overflow-hidden rounded-xl",
+          badge && "border border-[#e3e5f0] bg-white",
+          !clinic.brand.logo &&
+            cn("grid place-items-center", light ? "bg-white/15 text-white" : "bg-brand text-white"),
         )}
       >
-        <PawPrint className="size-5" aria-hidden="true" />
+        {clinic.brand.logo ? (
+          <span className="absolute bottom-0 left-1/2 block h-[168px] w-[230px] -translate-x-1/2">
+            <Image
+              src={clinic.brand.logo}
+              alt=""
+              fill
+              sizes="230px"
+              className="object-contain object-bottom"
+            />
+          </span>
+        ) : (
+          <PawPrint className="size-5" aria-hidden="true" />
+        )}
       </span>
-      <span
-        className={cn(
-          "max-w-[11rem] font-serif text-[1.05rem] leading-tight",
-          light ? "text-primary-foreground" : "text-brand",
-        )}
-      >
-        {clinic.name}
+      <span className="flex min-w-0 flex-col leading-none">
+        <span className={cn("font-serif text-[21px] font-bold", light ? "text-white" : "text-brand")}>
+          {clinic.name}
+        </span>
+        {clinic.subtitle ? (
+          <span className={cn("mt-1 text-[12.5px] font-semibold", light ? "text-white/75" : "text-[#555a7a]")}>
+            {clinic.subtitle}
+          </span>
+        ) : null}
       </span>
     </span>
   );

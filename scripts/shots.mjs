@@ -9,7 +9,7 @@ if (!slug) {
 }
 
 const base = process.env.SHOTS_URL ?? "http://127.0.0.1:3000";
-const pages = ["", "/paslaugos", "/apie", "/specialistai", "/kainos", "/kontaktai"];
+const pages = ["", "/paslaugos", "/paslaugos/chirurgija", "/apie", "/specialistai", "/kainos", "/kontaktai"];
 const viewports = [
   { name: "desktop", width: 1440, height: 900 },
   { name: "mobile", width: 390, height: 844 },
@@ -28,7 +28,7 @@ try {
     page.setDefaultTimeout(20000);
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const route of pages) {
-      const name = route === "" ? "home" : route.slice(1);
+      const name = route === "" ? "home" : route.slice(1).replaceAll("/", "-");
       const url = `${base}/${slug}${route}`;
       const file = path.join(out, `${slug}-${name}-${viewport.name}.png`);
       console.log(`open ${url}`);

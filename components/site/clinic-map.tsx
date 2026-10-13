@@ -5,7 +5,7 @@ export function ClinicMap({ src, title }: { src: string; title: string }) {
         title={title}
         src={src}
         className="absolute inset-x-0 top-0 h-[calc(100%+2.25rem)] w-full border-0"
-        loading="lazy"
+        loading="eager"
         referrerPolicy="no-referrer-when-downgrade"
       />
       <a

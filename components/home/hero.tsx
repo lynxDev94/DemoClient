@@ -1,82 +1,114 @@
 "use client";
 
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import { HeroBlock, HeroPhoto } from "@/components/motion/reveal";
-import { Container } from "@/components/site/container";
-import { PhoneButton } from "@/components/site/phone-button";
-import { Photo } from "@/components/site/photo";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 import type { Clinic } from "@/clinics/types";
-import { clinicPath, clinicStats, paragraphs } from "@/lib/format";
-import { asPhoto } from "@/lib/photos";
+import { Container } from "@/components/site/container";
+import { ArrowIcon, CheckIcon, PhoneIcon } from "@/components/site/marks";
+import { PhotoFrame } from "@/components/site/photo-frame";
+import { GhostLink, PillLink } from "@/components/site/pill";
+import { clinicPath, telHref } from "@/lib/format";
 import { labels } from "@/lib/labels";
-import { cn } from "@/lib/utils";
+import { photoOrStock, stockPhotos } from "@/lib/photos";
+import { heroIn, heroInItem, heroPhotoIn } from "@/lib/motion";
 
 export function Hero({ clinic }: { clinic: Clinic }) {
-  const photo = asPhoto(clinic.about.photos[0]);
-  const intro = clinic.lead !== undefined ? clinic.lead : paragraphs(clinic.about.text)[0];
-  const stats = clinicStats(clinic);
-  const eyebrow = clinic.about.foundedYear
-    ? `${labels.since} ${clinic.about.foundedYear}`
-    : labels.clinicFallback;
+  const reduce = useReducedMotion();
+  const [parallax, setParallax] = useState(false);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 900], [0, 70]);
+  const photo = photoOrStock(clinic.about.photos[0], stockPhotos.hero);
+  const points = clinic.heroPoints ?? [];
+
+  useEffect(() => {
+    setParallax(reduce === false);
+  }, [reduce]);
 
   return (
-    <section className="pt-12 pb-8 md:pt-16 md:pb-12">
-      <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-16">
-          <div>
-            <HeroBlock delay={0.3}>
-              <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">{eyebrow}</p>
-              <h1 className="mt-5 max-w-xl font-serif text-4xl leading-[1.08] tracking-tight text-brand md:text-6xl">
-                {clinic.tagline}
-              </h1>
-            </HeroBlock>
-            <HeroBlock delay={0.6} className="mt-6">
-              {intro ? (
-                <p className="max-w-lg text-lg leading-relaxed text-muted-foreground">{intro}</p>
-              ) : null}
-              <div className="mt-8 flex flex-wrap items-center gap-3">
-                <PhoneButton phone={clinic.phone} />
-                <Link
-                  href={clinicPath(clinic.slug, "/paslaugos")}
-                  className={cn(
-                    buttonVariants({ variant: "outline", size: "lg" }),
-                    "h-12 rounded-full border-brand/15 bg-transparent px-6 text-brand shadow-none transition-colors duration-200 hover:bg-secondary hover:text-brand active:translate-y-0",
-                  )}
-                >
-                  {labels.nav[1].label}
-                </Link>
-              </div>
-            </HeroBlock>
-          </div>
-          {photo ? (
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[32px] bg-secondary shadow-[0_30px_80px_-48px_rgba(30,58,50,0.7)]">
-              <HeroPhoto className="absolute inset-0">
-                <Photo
-                  src={photo.src}
-                  focus={photo.focus}
-                  alt={clinic.name}
-                  priority
-                  sizes="(min-width: 1024px) 46vw, 100vw"
-                />
-              </HeroPhoto>
+    <section className="bg-white">
+      <Container className="flex flex-wrap items-stretch gap-12 py-20 pt-[72px]">
+        <motion.div
+          className="flex min-w-0 flex-1 basis-[460px] flex-col justify-center gap-7"
+          variants={heroIn}
+          initial="hidden"
+          animate="show"
+        >
+          {clinic.heroEyebrow ? (
+            <motion.span
+              variants={heroInItem}
+              className="inline-flex w-fit items-center rounded-full bg-secondary px-3.5 py-2 text-[13.5px] font-bold tracking-[0.04em] text-brand uppercase"
+            >
+              {clinic.heroEyebrow}
+            </motion.span>
+          ) : null}
+          <motion.h1
+            variants={heroInItem}
+            className="font-serif text-[clamp(40px,5.2vw,68px)] leading-[1.02] font-bold text-brand"
+          >
+            {clinic.tagline}
+          </motion.h1>
+          {clinic.lead ? (
+            <motion.p variants={heroInItem} className="max-w-[560px] text-[19px] leading-relaxed text-[#3d4163]">
+              {clinic.lead}
+            </motion.p>
+          ) : null}
+          <motion.div variants={heroInItem} className="flex flex-wrap gap-3">
+            <PillLink href={telHref(clinic.phone)}>
+              <PhoneIcon />
+              {clinic.phone}
+            </PillLink>
+            <GhostLink href={clinicPath(clinic.slug, "/paslaugos")}>
+              {labels.allServices}
+              <ArrowIcon />
+            </GhostLink>
+          </motion.div>
+          {points.length > 0 ? (
+            <motion.div
+              variants={heroInItem}
+              className="flex flex-wrap gap-x-7 gap-y-2.5 pt-2 text-[15px] font-semibold text-[#3d4163]"
+            >
+              {points.map((point) => (
+                <span key={point} className="inline-flex items-center gap-2">
+                  <CheckIcon className="size-[18px] text-accent" />
+                  {point}
+                </span>
+              ))}
+            </motion.div>
+          ) : null}
+        </motion.div>
+        <div className="relative min-h-[520px] min-w-0 flex-1 basis-[420px]">
+          <motion.div
+            className="absolute inset-0"
+            style={parallax ? { y } : undefined}
+            initial={heroPhotoIn.initial}
+            animate={heroPhotoIn.animate}
+            transition={heroPhotoIn.transition}
+          >
+            <div className="absolute inset-x-0 top-0 right-0 bottom-10 left-10 overflow-hidden rounded-[28px] max-[720px]:left-0">
+              <PhotoFrame
+                photo={photo}
+                alt={clinic.name}
+                label={labels.photo.hero}
+                className="absolute inset-0"
+                sizes="(min-width: 1024px) 46vw, 100vw"
+                priority
+              />
+            </div>
+          </motion.div>
+          {clinic.hours.length > 0 ? (
+            <div className="absolute bottom-0 left-0 flex w-[290px] max-w-[80%] flex-col gap-3 rounded-[20px] bg-white px-6 py-[22px] shadow-[0_18px_40px_rgba(20,22,58,0.14)]">
+              <span className="text-[13px] font-bold tracking-[0.05em] text-accent uppercase">
+                {labels.pages.hours}
+              </span>
+              {clinic.hours.map((slot) => (
+                <div key={slot.days} className="flex justify-between gap-3 text-[15.5px]">
+                  <span className="text-[#555a7a]">{slot.days}</span>
+                  <span className="font-bold">{slot.time}</span>
+                </div>
+              ))}
             </div>
           ) : null}
         </div>
-        {stats.length > 0 ? (
-          <HeroBlock delay={0.8} className="mt-12 md:mt-16">
-            <dl className="grid grid-cols-2 gap-6 border-t border-border pt-8 md:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.label}>
-                  <dt className="text-xs font-semibold tracking-[0.16em] text-muted-foreground uppercase">
-                    {stat.label}
-                  </dt>
-                  <dd className="mt-2 font-serif text-4xl tracking-tight text-brand">{stat.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </HeroBlock>
-        ) : null}
       </Container>
     </section>
   );

@@ -12,7 +12,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Multi-clinic veterinary website template for small Lithuanian clinics. One Next.js app serves every clinic. Shared pages and components render a `Clinic` config; they do not contain a clinic's own copy.
 
-`/` lists clinics only when `NODE_ENV` is `development`. In production it is a minimal page with no clinic list, and it is `noindex`. Each clinic lives at `/[clinic]` with `paslaugos`, `apie`, `specialistai`, `kainos`, and `kontaktai`.
+`/` lists clinics only when `NODE_ENV` is `development`. In production it is a minimal page with no clinic list, and it is `noindex`. Each clinic lives at `/[clinic]` with `paslaugos`, `paslaugos/[service]`, `apie`, `specialistai`, `kainos`, and `kontaktai`. `/kainos` stays in the nav only when `prices.length > 0`. `/specialistai` stays in the nav only when `showSpecialists` is not `false`. One service template (`Chirurgija` layout) renders every service from the config.
 
 ## Folders
 
@@ -25,11 +25,11 @@ Multi-clinic veterinary website template for small Lithuanian clinics. One Next.
 
 ## Clinic configs
 
-`Clinic` is defined in `clinics/types.ts`: slug, `published`, name, tagline, phone, optional email, address, map embed, optional `locationPhoto` (the building, shown on the contact page), hours, about (text, optional founded year, photos, optional `background` for the home about block, optional `pagePhoto` for the Apie page), optional `servicesPhoto` for the Paslaugos page, services, specialists, prices, reviews, optional Google rating, optional `showRating`, optional `googlePlaceId`, brand colors, optional `brand.logo`, optional `brand.logoStyle` (`badge` or `plain`, default `badge`), optional socials, optional `showSpecialists` (false hides the specialists section and nav link), optional `pricesNote` (one line on the prices page when there are no price rows). A photo is a public path or `{ src, focus }`. `focus` is a CSS `object-position`, for example `center 30%`.
+`Clinic` is defined in `clinics/types.ts`: slug, `published`, name, optional `legalName`, tagline, optional `subtitle`, phone, optional email, address, map embed, optional `locationPhoto`, hours, about (text, optional founded year, photos, optional `background`, optional `pagePhoto`), optional `heroEyebrow`, optional `heroPoints`, optional `aboutPoints`, optional `facts`, optional `servicesPhoto`, required `serviceCategories`, `services` (`slug`, `title`, `category`, `summary`, optional `featured`, `showOnHome`, `highlight`, `homeTitle`, `homeSummary`, `homeCta`, optional `detail` with lead, stats, steps, groups, paragraphs, related slugs), specialists, optional `showSpecialists`, prices, optional `pricesNote`, reviews, optional `symptoms`, `values`, `partners`, `team` (hidden when empty), optional `lead`, optional `copy`, optional Google rating, optional `showRating`, optional `googlePlaceId`, brand colors, optional `brand.logo`, optional `brand.logoStyle` (`badge` or `plain`, default `badge`), optional socials. A photo is a public path or `{ src, focus }`. `focus` is a CSS `object-position`, for example `center 30%`. Facts, hero points, symptoms, reviews, values, partners, team, and empty service-detail blocks hide when they have no data. A service has a page at `/[clinic]/paslaugos/[slug]` only when `detail` has a lead plus steps, groups, or paragraphs. Otherwise it is a static row. Nav shows Apie mus, Kainos, and Specialistai only when that page has real content. A specialist named `Gydytojas veterinaras` with no photo is a placeholder and does not count. Hero, about, and service-sidebar photos fall back to stock in `public/photos/` when the clinic has none. Any other missing photo is a tinted placeholder with a label, never a broken image.
 
 Each clinic file exports `const clinic: Clinic`. Next.js cannot bundle a fully dynamic import path, so `clinics/index.ts` maps each slug to a static loader. Add a clinic by editing that map; `getClinic` and `getAllClinics` read only the registry. `brandStyle` turns `brand.primary` and `brand.accent` into CSS variables.
 
-`services[].icon` must be a key in `lib/icons.tsx`: `Stethoscope`, `Syringe`, `Toothbrush`, `Scissors`, `ScanLine`, `Ambulance`, `Microscope`, `PawPrint`, `Heart`, `Bone`, `Shield`. Unknown names fall back to `PawPrint`.
+Service icons are not part of the config. The home page shows one `featured` service that also has a detail page, and at most five `showOnHome` services. Without a featured detail page the list is full width.
 
 ## Add a clinic
 
@@ -46,7 +46,7 @@ A photo may be a string or `{ src, focus }`. `focus` is the CSS `object-position
 
 ## Logo
 
-`brand.logoStyle` is `badge` or `plain`. The default is `badge`: a white rounded container with padding and a hairline border, so a logo with a white or opaque background looks intentional on the cream header and the dark footer. `plain` draws the file alone. The image keeps its aspect ratio: max-height 44px from the `sm` breakpoint and 36px below it, width auto. Do not stretch it. If a square or detailed logo is not readable at that size, say so in the QA report.
+`brand.logoStyle` is `badge` or `plain`. The default is `badge`: a 46px white rounded container with a hairline border, next to the clinic name and optional subtitle. The image is not stretched. A wide wordmark is cropped toward its mark inside that square; the name is set in type beside it. `plain` draws the file alone. If the mark is not readable at 46px, say so in the QA report. Do not enlarge it to fill the header.
 
 ## Animation
 
@@ -54,14 +54,19 @@ Framer Motion only, presets only from `lib/motion.ts`. Do not invent a second sp
 
 Default spring: `{ type: "spring", stiffness: 150, damping: 30, mass: 1 }`.
 
-- `fadeUp` — opacity 0→1, y 20→0, in view once, `amount: 0.2`
+- `fadeUp` — opacity 0→1, y 32→0, in view once, `amount: 0.2`
+- `heroIn` + `heroInItem` — hero text column, stagger 0.1s, y 32
+- `heroPhotoIn` / `heroImage` — scale 1.06→1, stiffness 80, damping 28, delay 0.15 (on mount)
+- Hero photo parallax: `useScroll` + `useTransform`, translateY 0→70 over the first 900px. Not a CSS scroll timeline.
+- `listStagger` + `listItem` — stagger 0.07s, y 32
+- Facts count up once in view, 1.4s, ease-out cubic (`components/motion/count-up.tsx`)
+- Hover: cards `y: -6` with shadow `0 18px 40px rgba(20,22,58,.12)`; buttons `y: -2`; row arrows `x: 5`. Duration 0.4s, ease `[0.22, 1, 0.36, 1]` (`hoverMove`)
 - `sectionHead` — opacity, y 20→0, scale 1.1→1, in view once, `amount: 0.3`
 - `fromLeft` / `fromRight` — x ±80
 - `fromLeftFar` / `fromRightFar` — x ±440, `hidden` / `show` variants
-- `heroImage` — scale 1.3→1, stiffness 100, delay 0.2 (plays on mount, not in view)
 - `heroItem(delay)` — fade up on mount
 - `navIn` — x -10→0, delay 0.2
-- `cardStagger` + `cardItem` — `staggerChildren: 0.08`, then y 20
+- `cardStagger` + `cardItem` — `staggerChildren: 0.08`, then y 32
 - `pawLeft` / `pawRight` — drop in with rotation
 
 `components/motion/motion-root.tsx` sets `reducedMotion="user"`. Wrappers in `components/motion/reveal.tsx` (`FadeUp`, `SectionHead`, `Stagger`, `StaggerItem`, `HeroBlock`, `HeroPhoto`, `SlideIn`) render a plain `div` when `useReducedMotion()` is true. Any new motion follows that bailout.
@@ -69,10 +74,10 @@ Default spring: `{ type: "spring", stiffness: 150, damping: 30, mass: 1 }`.
 ## Rules
 
 - User-facing text is Lithuanian. `app/layout.tsx` sets `lang="lt"`. Shared chrome (nav, buttons, section titles, empty states) lives in `lib/labels.ts`. Clinic-specific copy lives only in `clinics/<slug>.ts`.
-- No booking. No forms, calendars, or “book online” links. The only conversion is a `tel:` link through `PhoneButton` (`labels.call`, “Skambinti”).
+- No booking. No forms, calendars, or “book online” links. The only conversion is a `tel:` link (`labels.call`, “Skambinti”).
 - Do not hardcode a clinic name, phone, address, price, review, service, or photo in a component. Pass `clinic` or read `labels`.
 - Every clinic is `published: false` until it is a paying customer. `published: false` sends `noindex, nofollow`. Only `published: true` may be indexed. The `/` page is always `noindex`.
-- Headings use Newsreader from `next/font/google` with `subsets: ['latin', 'latin-ext']`, exposed as `--font-fraunces` so `font-serif` stays. Body text uses Outfit with the same subsets.
+- Headings use Bricolage Grotesque from `next/font/google` with `subsets: ['latin', 'latin-ext']`, exposed as `--font-fraunces` so `font-serif` stays. Body text uses Manrope on `--font-outfit`. Display letter-spacing is `-0.02em`.
 - All fonts must support Lithuanian (test ą č ę ė į š ų ū ž).
 
 ## Adding a new clinic: rules

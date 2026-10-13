@@ -14,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const clinic = await getClinic((await params).clinic);
   if (!clinic) return { title: labels.notFound.title };
-  return { title: `${labels.nav[4].label} · ${clinic.name}`, description: clinic.tagline };
+  return { title: `${labels.nav[3].label} · ${clinic.name}`, description: clinic.tagline };
 }
 
 export default async function PricesPage({
@@ -31,7 +31,7 @@ export default async function PricesPage({
         <Container>
           <SectionHeading
             as="h1"
-            eyebrow={labels.nav[4].label}
+            eyebrow={labels.nav[3].label}
             title={noPrices ? (clinic.pricesNote ?? labels.pages.pricesEmpty) : labels.pages.pricesTitle}
             text={noPrices ? undefined : labels.pages.pricesText}
           />

@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { getClinic } from "@/clinics";
 import { ClinicMap } from "@/components/site/clinic-map";
 import { Container } from "@/components/site/container";
-import { HoursList } from "@/components/site/hours-list";
-import { PhoneButton } from "@/components/site/phone-button";
-import { Photo } from "@/components/site/photo";
-import { SectionHeading } from "@/components/site/section-heading";
-import { telHref } from "@/lib/format";
-import { asPhoto } from "@/lib/photos";
+import { ClockIcon, MailIcon, PinIcon } from "@/components/site/marks";
+import { PillLink } from "@/components/site/pill";
+import { clinicPath, telHref } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
 
@@ -27,91 +25,92 @@ export default async function ContactPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
-  const locationPhoto = asPhoto(clinic.locationPhoto);
-  const socials = [
-    clinic.socials?.facebook ? { href: clinic.socials.facebook, label: "Facebook" } : null,
-    clinic.socials?.instagram ? { href: clinic.socials.instagram, label: "Instagram" } : null,
-  ].filter((item): item is { href: string; label: string } => item !== null);
+  const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address)}`;
 
   return (
-    <section className="pt-16 pb-20 md:pt-24 md:pb-28">
-      <Container>
-        <SectionHeading
-          as="h1"
-          eyebrow={labels.nav[5].label}
-          title={labels.pages.contactTitle}
-          text={
-            clinic.hours.length > 0 ? labels.pages.contactText : labels.pages.contactTextNoHours
-          }
-        />
-        {locationPhoto ? (
-          <div className="relative mt-10 aspect-[1805/697] overflow-hidden rounded-[32px] border border-border bg-secondary">
-            <Photo
-              src={locationPhoto.src}
-              focus={locationPhoto.focus}
-              alt={clinic.address}
-              sizes="(min-width: 1024px) 960px, 100vw"
-            />
-          </div>
-        ) : null}
-        <div
-          className={`grid items-start gap-8 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] ${locationPhoto ? "mt-8" : "mt-12"}`}
-        >
-          <div className="rounded-[32px] border border-border/80 bg-card p-7 shadow-[0_24px_50px_-40px_rgba(30,58,50,0.5)] md:p-9">
-            <p className="text-xs font-semibold tracking-[0.18em] text-accent uppercase">
-              {labels.pages.address}
-            </p>
-            <p className="mt-3 font-serif text-3xl tracking-tight text-brand">{clinic.address}</p>
-            <div className="mt-8 space-y-2">
-              <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                {labels.pages.phone}
-              </p>
-              <a
-                href={telHref(clinic.phone)}
-                className="font-serif text-3xl tracking-tight text-brand transition-colors duration-200 hover:text-accent"
-              >
+    <section className="bg-white">
+      <Container className="flex flex-col gap-10 pt-16 pb-24">
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-[#555a7a]">
+            <Link href={clinicPath(clinic.slug)} className="text-[#555a7a]">
+              {labels.nav[0].label}
+            </Link>
+            {" / "}
+            {labels.nav[5].label}
+          </p>
+          <h1 className="font-serif text-[clamp(42px,5.2vw,68px)] leading-none font-bold text-brand">
+            {clinic.copy?.contactTitle ?? labels.pages.contactTitle}
+          </h1>
+        </div>
+        <div className="flex flex-wrap items-stretch gap-5">
+          <div className="flex min-w-0 flex-[1.1] basis-[380px] flex-col justify-between gap-8 rounded-[28px] bg-brand px-9 py-9 text-white">
+            <div className="flex flex-col gap-2.5">
+              <span className="text-[13px] font-bold tracking-[0.06em] text-[#cfd1ee] uppercase">
+                {labels.pages.registration}
+              </span>
+              <a href={telHref(clinic.phone)} className="font-serif text-[clamp(34px,3.8vw,52px)] leading-tight font-bold">
                 {clinic.phone}
               </a>
+              <p className="text-base leading-relaxed text-[#dcdef3]">
+                {clinic.copy?.contactLead ?? labels.pages.contactText}
+              </p>
+            </div>
+            <PillLink href={telHref(clinic.phone)} className="self-start">
+              {labels.pages.contactCta}
+            </PillLink>
+          </div>
+          <div className="flex min-w-0 flex-1 basis-[340px] flex-col rounded-[28px] border border-[#e3e5f0] bg-white px-8">
+            <div className="flex gap-4 border-b border-[#e3e5f0] py-[18px]">
+              <PinIcon className="mt-0.5 size-[22px] shrink-0 text-accent" />
+              <span className="flex flex-col gap-1">
+                <span className="text-[13px] font-bold tracking-[0.05em] text-[#555a7a] uppercase">
+                  {labels.pages.address}
+                </span>
+                <span className="text-lg font-bold">{clinic.address}</span>
+              </span>
             </div>
             {clinic.email ? (
-              <div className="mt-6">
-                <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                  {labels.pages.email}
-                </p>
-                <a
-                  href={`mailto:${clinic.email}`}
-                  className="mt-2 inline-flex text-brand transition-colors duration-200 hover:text-accent"
-                >
-                  {clinic.email}
-                </a>
+              <div className="flex gap-4 border-b border-[#e3e5f0] py-[18px]">
+                <MailIcon className="mt-0.5 size-[22px] shrink-0 text-accent" />
+                <span className="flex flex-col gap-1">
+                  <span className="text-[13px] font-bold tracking-[0.05em] text-[#555a7a] uppercase">
+                    {labels.pages.email}
+                  </span>
+                  <a href={`mailto:${clinic.email}`} className="text-lg font-bold">
+                    {clinic.email}
+                  </a>
+                </span>
               </div>
             ) : null}
             {clinic.hours.length > 0 ? (
-              <div className="mt-8">
-                <p className="text-xs font-semibold tracking-[0.18em] text-muted-foreground uppercase">
-                  {labels.pages.hours}
-                </p>
-                <HoursList hours={clinic.hours} className="mt-2" />
+              <div className="flex gap-4 py-[18px]">
+                <ClockIcon className="mt-0.5 size-[22px] shrink-0 text-accent" />
+                <span className="flex flex-1 flex-col gap-2.5">
+                  <span className="text-[13px] font-bold tracking-[0.05em] text-[#555a7a] uppercase">
+                    {labels.pages.hours}
+                  </span>
+                  {clinic.hours.map((slot) => (
+                    <span key={slot.days} className="flex justify-between gap-3 text-[17px]">
+                      <span>{slot.days}</span>
+                      <span className="font-extrabold">{slot.time}</span>
+                    </span>
+                  ))}
+                </span>
               </div>
             ) : null}
-            {socials.length > 0 ? (
-              <div className="mt-6 flex gap-3">
-                {socials.map((social) => (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="rounded-full border border-border px-3 py-1.5 text-sm text-brand transition-colors duration-200 hover:border-accent hover:text-accent"
-                  >
-                    {social.label}
-                  </a>
-                ))}
-              </div>
-            ) : null}
-            <PhoneButton phone={clinic.phone} className="mt-8" />
           </div>
-          <ClinicMap src={clinic.mapEmbedUrl} title={`${labels.a11y.map}: ${clinic.address}`} />
+        </div>
+        <div className="flex min-h-[420px] flex-col gap-3">
+          {clinic.mapEmbedUrl ? (
+            <ClinicMap src={clinic.mapEmbedUrl} title={clinic.address} />
+          ) : (
+            <div className="grid min-h-[420px] place-items-center rounded-[28px] bg-placeholder text-[#3d4163]">
+              {labels.photo.map}
+            </div>
+          )}
+          <a href={maps} target="_blank" rel="noreferrer" className="self-start font-bold text-accent">
+            {labels.pages.contactMaps}
+          </a>
         </div>
       </Container>
     </section>
