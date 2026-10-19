@@ -3,7 +3,7 @@ import path from "path";
 import type { Clinic, ClinicPhoto } from "@/clinics/types";
 import { asPhoto } from "@/lib/photos";
 
-const MIN_WIDTH = { hero: 1200, card: 800 } as const;
+const MIN_WIDTH = { hero: 1200, card: 800, thumb: 400 } as const;
 /** Hero column is about 500px, so 1000px still covers a 2x screen. Below that, swap. */
 const HERO_KEEP = 1000;
 
@@ -11,6 +11,7 @@ const HERO_KEEP = 1000;
 const STOCK = {
   hero: "/photos/dog-portrait.jpg",
   card: "/photos/services-img.jpg",
+  thumb: "/photos/services-img.jpg",
 } as const;
 
 const sizes = new Map<string, number | null>();
@@ -19,10 +20,8 @@ const warned = new Set<string>();
 async function widthOf(publicPath: string) {
   if (sizes.has(publicPath)) return sizes.get(publicPath) ?? null;
   const file = path.join(process.cwd(), "public", publicPath.replace(/^\//, ""));
-  if (!fs.existsSync(file)) {
-    sizes.set(publicPath, null);
-    return null;
-  }
+  // Missing files are not cached: a photo added while the dev server runs shows up on the next load.
+  if (!fs.existsSync(file)) return null;
   const sharp = (await import("sharp")).default;
   const meta = await sharp(file).metadata();
   const width = meta.width ?? null;
@@ -69,6 +68,11 @@ export async function fitClinicPhotos(clinic: Clinic): Promise<Clinic> {
   next.about.background = await fit(next.about.background, "card", slot("about background"));
   next.about.pagePhoto = await fit(next.about.pagePhoto, "card", slot("about page"));
   next.servicesPhoto = await fit(next.servicesPhoto, "card", slot("services"));
+  if (next.gallery) {
+    next.gallery = (await Promise.all(
+      next.gallery.map((photo, index) => fit(photo, "thumb", slot(`gallery ${index + 1}`))),
+    )) as ClinicPhoto[];
+  }
   next.locationPhoto = await fit(next.locationPhoto, "card", slot("location"));
   next.specialists = await Promise.all(
     next.specialists.map(async (person, index) => ({

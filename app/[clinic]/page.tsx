@@ -9,6 +9,8 @@ import { Symptoms } from "@/components/home/symptoms";
 import { CtaBanner } from "@/components/site/cta-banner";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
+import { WarmHome } from "@/components/warm/home";
+import { ModernHome } from "@/components/modern/home";
 
 export async function generateMetadata({
   params,
@@ -26,6 +28,8 @@ export default async function ClinicHome({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  if (clinic.theme === "modern") return <ModernHome clinic={clinic} />;
+  if (clinic.theme === "warm") return <WarmHome clinic={clinic} />;
   return (
     <>
       <Hero clinic={clinic} />

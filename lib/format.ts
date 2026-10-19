@@ -168,6 +168,64 @@ export function brandStyle(clinic: Clinic): CSSProperties {
   } as React.CSSProperties;
 }
 
+/**
+ * Modern theme colours and fonts, set inline on the clinic wrapper next to brandStyle().
+ * Inline so the theme never depends on a stylesheet being reloaded.
+ */
+export function modernStyle(): CSSProperties {
+  return {
+    "--font-fraunces": "var(--font-jakarta)",
+    "--font-outfit": "var(--font-dm)",
+    "--background": "#f4f7fa",
+    "--foreground": "#0f2233",
+    "--card-foreground": "#0f2233",
+    "--border": "#e2e8ef",
+    "--input": "#e2e8ef",
+    "--line": "#e2e8ef",
+    "--muted-foreground": "#44566a",
+    "--subtle": "#6b7c8f",
+    "--placeholder": "#dfe8ef",
+    "--secondary": "color-mix(in srgb, var(--brand) 9%, white)",
+    "--secondary-foreground": "var(--brand)",
+    "--brand-deep": "color-mix(in srgb, var(--brand) 72%, black)",
+    "--brand-night": "color-mix(in srgb, var(--brand) 48%, black)",
+    "--on-brand": "color-mix(in srgb, var(--brand) 16%, white)",
+    "--accent-ink": "color-mix(in srgb, var(--accent) 70%, black)",
+    "--accent-soft": "color-mix(in srgb, var(--accent) 13%, white)",
+    "--accent-glow": "color-mix(in srgb, var(--accent) 55%, white)",
+    background: "var(--background)",
+    color: "var(--foreground)",
+    fontFamily: "var(--font-outfit)",
+  } as CSSProperties;
+}
+
+/** Warm theme colours and fonts, set inline on the clinic wrapper next to brandStyle(). */
+export function warmStyle(): CSSProperties {
+  return {
+    "--font-fraunces": "var(--font-warm-head)",
+    "--font-outfit": "var(--font-warm-body)",
+    "--background": "#f7f5f9",
+    "--foreground": "#2b1b2e",
+    "--card-foreground": "#2b1b2e",
+    "--border": "#ebe5ee",
+    "--input": "#ebe5ee",
+    "--line": "#e0d6e3",
+    "--muted-foreground": "#574a5a",
+    "--subtle": "#7a6c7d",
+    "--placeholder": "#e9dfe9",
+    "--secondary": "color-mix(in srgb, var(--brand) 10%, white)",
+    "--secondary-foreground": "var(--brand)",
+    "--brand-deep": "color-mix(in srgb, var(--brand) 74%, black)",
+    "--brand-night": "color-mix(in srgb, var(--brand) 56%, black)",
+    "--on-brand": "color-mix(in srgb, var(--brand) 14%, white)",
+    "--accent-ink": "color-mix(in srgb, var(--accent) 48%, black)",
+    "--accent-soft": "color-mix(in srgb, var(--accent) 22%, white)",
+    background: "var(--background)",
+    color: "var(--foreground)",
+    fontFamily: "var(--font-outfit)",
+  } as CSSProperties;
+}
+
 export function clinicStats(clinic: Clinic) {
   const stats: { value: string; label: string }[] = [];
   if (clinic.about.foundedYear) {

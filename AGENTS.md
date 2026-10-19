@@ -71,13 +71,32 @@ Default spring: `{ type: "spring", stiffness: 150, damping: 30, mass: 1 }`.
 
 `components/motion/motion-root.tsx` sets `reducedMotion="user"`. Wrappers in `components/motion/reveal.tsx` (`FadeUp`, `SectionHead`, `Stagger`, `StaggerItem`, `HeroBlock`, `HeroPhoto`, `SlideIn`) render a plain `div` when `useReducedMotion()` is true. Any new motion follows that bailout.
 
+## Themes
+
+`clinic.theme` picks the layout. `classic` (default) is the Gyvūnų Edenas design in `components/home` and `components/site`. `modern` is the Pas pumą design in `components/modern` (design source: Claude Design canvas "Pas pumą — vet clinic design").
+
+- `app/[clinic]/layout.tsx` sets `data-theme="modern"` next to `brandStyle()` and renders `ModernTopBar` and `ModernHeader` together in one sticky block (no scroll shadow), then `ModernFooter`.
+- Home, `paslaugos` and `kontaktai` branch to `ModernHome`, `ModernServicesPage` and `ModernContactPage`. Other routes reuse the classic pages; the theme variables restyle them.
+- `modernStyle()` in `lib/format.ts` is set inline on the wrapper (not in a stylesheet). It swaps fonts to Plus Jakarta Sans (headings, `--font-jakarta`) and DM Sans (body, `--font-dm`) and derives `--brand-deep`, `--brand-night`, `--on-brand`, `--accent-ink`, `--accent-soft`, `--accent-glow` from the brand colours. Use these variables, not new hex values.
+- Modern-only config: `heroBadge` (floating hero card), `spotlight` (dark feature band), `gallery` (two small photos floating over the about photo, min 400px wide). `ModernLogo` shows `brand.logo` as a square mark in a white tile with the name set in type, so use a square mark file, not a wide wordmark. Home grid shows up to six `showOnHome` services; the ticker repeats their titles. Nav turns "Apie mus" into a `#apie` anchor and adds `#atsiliepimai` when there are reviews.
+- Modern motion lives in `components/modern/motion.tsx` and `page-motion.tsx`, using the presets under "Modern theme" in `lib/motion.ts` (`wordStagger`/`wordItem`, `clipReveal`, `floatCard`, `pulseRing`, `marqueeSpeed`, `helixLoop`, `cardLift`, `barGrow`, `phoneRing`). Every wrapper renders static markup under reduced motion.
+
+### Warm theme
+
+`theme: "warm"` is the Keturios Pėdutės design (Claude Design canvas "Keturios Pėdutės — vet clinic design") in `components/warm`. Plum + peach from `brand.primary` / `brand.accent`, Outfit headings (`--font-warm-head`) and Nunito Sans body (`--font-warm-body`), all set by `warmStyle()` in `lib/format.ts`.
+
+- Home: blob hero photo (`about.photos[0]`) with a tilted polaroid (`about.photos[1]`, else `about.background`, else stock) and a paw trail, rating band (`googleRating` when `showRating` is not false, plus `ratingQuote`), up to four `showOnHome` services, `whyUs` quote cards, a review slider (5-star reviews only), visit block, call strip.
+- `whyUs[].quote` and `ratingQuote.text` must be exact words from a real 5-star review.
+- `paslaugos` and `kontaktai` use `WarmServicesPage` / `WarmContactPage`; other routes reuse the classic pages restyled by the theme variables.
+- Motion presets: the "Warm theme" block in `lib/motion.ts` (`maskStagger`/`maskItem`, `blobPhoto`, `polaroidSway`, `pawStep`, `starRow`/`starItem`, `slideSwap`, `peachRing`). Every wrapper falls back to static markup under reduced motion.
+
 ## Rules
 
 - User-facing text is Lithuanian. `app/layout.tsx` sets `lang="lt"`. Shared chrome (nav, buttons, section titles, empty states) lives in `lib/labels.ts`. Clinic-specific copy lives only in `clinics/<slug>.ts`.
 - No booking. No forms, calendars, or “book online” links. The only conversion is a `tel:` link (`labels.call`, “Skambinti”).
 - Do not hardcode a clinic name, phone, address, price, review, service, or photo in a component. Pass `clinic` or read `labels`.
 - Every clinic is `published: false` until it is a paying customer. `published: false` sends `noindex, nofollow`. Only `published: true` may be indexed. The `/` page is always `noindex`.
-- Headings use Bricolage Grotesque from `next/font/google` with `subsets: ['latin', 'latin-ext']`, exposed as `--font-fraunces` so `font-serif` stays. Body text uses Manrope on `--font-outfit`. Display letter-spacing is `-0.02em`.
+- Classic theme headings use Bricolage Grotesque from `next/font/google` with `subsets: ['latin', 'latin-ext']`, exposed as `--font-fraunces` so `font-serif` stays. Body text uses Manrope on `--font-outfit`. Display letter-spacing is `-0.02em`.
 - All fonts must support Lithuanian (test ą č ę ė į š ų ū ž).
 
 ## Adding a new clinic: rules

@@ -5,6 +5,28 @@ export type Clinic = {
   slug: string;
   /** false sends noindex, nofollow. true only after the clinic is a paying customer. */
   published: boolean;
+  /**
+   * Visual layout. "classic" (default) is the Gyvūnų Edenas design.
+   * "modern" is the Pas pumą design: top info bar, sticky header, overlapping stats card,
+   * service ticker, spotlight band and a reviews marquee.
+   * "warm" is the Keturios Pėdutės design: blob hero photo, rating band, quote cards, review slider.
+   */
+  theme?: "classic" | "modern" | "warm";
+  /** Modern theme: short label on a floating card over the hero photo. Hidden when empty. */
+  heroBadge?: string;
+  /** Warm theme: "why us" cards, each a heading plus an exact quote from a 5-star review. Hidden when empty. */
+  whyUs?: { title: string; quote: string; author: string }[];
+  /** Warm theme: quote in the rating band. Exact words from a 5-star review. */
+  ratingQuote?: { text: string; author: string };
+  /** Modern theme: small photos floating over the home about photo (two are shown). Min 400px wide. */
+  gallery?: ClinicPhoto[];
+  /** Modern theme: dark feature band on the home page. Hidden when empty. */
+  spotlight?: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    cards?: { title: string; text: string }[];
+  };
   name: string;
   tagline: string;
   phone: string;

@@ -119,3 +119,20 @@
 [id] {
   scroll-margin-top: 7.5rem;
 }
+
+/* Modern theme (Pas pumą design). Colours and fonts come from modernStyle() in lib/format.ts. */
+[data-theme="modern"] .font-serif {
+  letter-spacing: -0.025em;
+}
+
+[data-theme="modern"] [id] {
+  scroll-margin-top: 8rem;
+}
+
+[data-theme="warm"] .font-serif {
+  letter-spacing: -0.02em;
+}
+
+[data-theme="warm"] [id] {
+  scroll-margin-top: 8rem;
+}

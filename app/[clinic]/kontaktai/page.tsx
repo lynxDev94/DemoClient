@@ -8,6 +8,8 @@ import { PillLink } from "@/components/site/pill";
 import { clinicPath, telHref } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
+import { WarmContactPage } from "@/components/warm/pages";
+import { ModernContactPage } from "@/components/modern/pages";
 
 export async function generateMetadata({
   params,
@@ -25,6 +27,8 @@ export default async function ContactPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  if (clinic.theme === "modern") return <ModernContactPage clinic={clinic} />;
+  if (clinic.theme === "warm") return <WarmContactPage clinic={clinic} />;
   const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(clinic.address)}`;
 
   return (

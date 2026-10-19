@@ -7,6 +7,8 @@ import { PillLink } from "@/components/site/pill";
 import { clinicPath, serviceHasDetail, serviceHref, telHref } from "@/lib/format";
 import { labels } from "@/lib/labels";
 import { requireClinic } from "@/lib/load";
+import { WarmServicesPage } from "@/components/warm/pages";
+import { ModernServicesPage } from "@/components/modern/pages";
 
 export async function generateMetadata({
   params,
@@ -24,6 +26,8 @@ export default async function ServicesPage({
   params: Promise<{ clinic: string }>;
 }) {
   const clinic = await requireClinic((await params).clinic);
+  if (clinic.theme === "modern") return <ModernServicesPage clinic={clinic} />;
+  if (clinic.theme === "warm") return <WarmServicesPage clinic={clinic} />;
   const title =
     clinic.copy?.servicesPageTitle ??
     `${clinic.services.length} ${labels.nav[1].label.toLowerCase()}`;

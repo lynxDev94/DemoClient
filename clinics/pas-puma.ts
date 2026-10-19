@@ -1,0 +1,202 @@
+import type { Clinic } from "./types";
+
+/**
+ * Sources: Google Business profile (place ChIJ-1rjQa4Y50YRg0Ef_rnFvU0), info.lt and visivet.lt listings.
+ * Photos and logo from the clinic, in public/clinics/pas-puma/.
+ * hero.png (black cat) is only 612px wide, under the hero floor, so the yorkie is the hero.
+ */
+const photo = "/clinics/pas-puma";
+
+export const clinic: Clinic = {
+  slug: "pas-puma",
+  published: false,
+  theme: "modern",
+  name: "Pas pumą",
+  legalName: "UAB „Pas pumą“",
+  subtitle: "Veterinarijos klinika",
+  tagline: "Rūpestinga pagalba jūsų augintiniui — nuo konsultacijos iki operacijos.",
+  heroEyebrow: "Veterinarijos klinika Kaune nuo 2011 m.",
+  lead: "Diagnozuojame, gydome ir operuojame, atliekame laboratorinius bei DNR tyrimus. Vaistų, papildų ir ekologiškų pašarų rasite čia pat, klinikoje.",
+  heroPoints: ["Individualus gydymas", "Vaistinė vietoje", "Pritaikyta vežimėliams"],
+  heroBadge: "DNR tyrimai",
+  phone: "+370 608 04052",
+  address: "Vytenio g. 2, 48422 Kaunas",
+  mapEmbedUrl:
+    "https://www.openstreetmap.org/export/embed.html?bbox=23.885,54.911,23.909,54.919&layer=mapnik&marker=54.915259,23.8970129",
+  hours: [
+    { days: "I–V", time: "10:00–19:00" },
+    { days: "VI", time: "10:00–14:00" },
+    { days: "VII", time: "Nedirbame" },
+  ],
+  about: {
+    photos: [{ src: `${photo}/cute-dog-vertical.png`, focus: "center 12%" }],
+    background: { src: `${photo}/veterinary-with-puppies.png`, focus: "center 75%" },
+    foundedYear: 2011,
+    text: "„Pas pumą“ — veterinarijos klinika Kaune, veikianti nuo 2011 metų. Teikiame didelę paslaugų įvairovę: nuo paprasčiausios konsultacijos iki sudėtingiausių ligų ar traumų chirurginio gydymo.",
+  },
+  aboutPoints: [
+    "Individualus gydymas pagal gyvūno situaciją",
+    "Genetinių ligų tyrimai su užsienio laboratorijomis",
+    "Vaistinė vietoje — vaistai, papildai, pašarai",
+    "Įėjimas ir aikštelė pritaikyti vežimėliams",
+  ],
+  facts: [
+    { value: "15+", label: "metų patirties (nuo 2011 m.)", countUp: true },
+    { value: "6 d.", label: "per savaitę dirbame", countUp: true },
+    { value: "DNR", label: "profilio ir genetiniai tyrimai" },
+    { value: "Vaistinė", label: "vaistai ir pašarai vietoje" },
+  ],
+  gallery: [
+    { src: `${photo}/hero.png`, focus: "center 40%" },
+    { src: `${photo}/cute-dog-vert.png`, focus: "center 35%" },
+  ],
+  spotlight: {
+    eyebrow: "Genetika",
+    title: "DNR profilio ir genetinių ligų tyrimai Kaune",
+    text: "Atliekame DNR profilio tyrimus, o dėl įvairių genetinių ligų tyrimų bendradarbiaujame su užsienio laboratorijomis. Taip pat vertiname klubų displaziją ir kelių sąnarius.",
+    cards: [
+      { title: "DNR profilis", text: "Tyrimai atliekami klinikoje." },
+      { title: "Genetinės ligos", text: "Su užsienio laboratorijomis." },
+      { title: "Sąnariai", text: "Klubų displazijos ir kelių vertinimas." },
+    ],
+  },
+  serviceCategories: [
+    { id: "gydymas", title: "Gydymas", text: "Nuo paprasčiausios konsultacijos iki sudėtingų ligų gydymo." },
+    { id: "chirurgija", title: "Chirurgija", text: "Sudėtingiausių ligų ir traumų chirurginis gydymas." },
+    { id: "tyrimai", title: "Laboratoriniai tyrimai", text: "Tyrimai, padedantys nustatyti diagnozę." },
+    { id: "genetika", title: "Genetika ir sąnariai", text: "DNR, genetinių ligų tyrimai ir sąnarių vertinimas." },
+    { id: "dokumentai", title: "Ženklinimas ir dokumentai", text: "Kelionėms ir kasdienybei." },
+    { id: "vaistine", title: "Vaistinė ir prekės", text: "Viskas, ko reikia gydymui, klinikoje vietoje." },
+  ],
+  services: [
+    {
+      slug: "konsultacijos",
+      title: "Konsultacijos ir gydymas",
+      category: "gydymas",
+      summary: "Apžiūra, diagnozė ir gydymas, parinktas pagal individualią gyvūno situaciją.",
+      showOnHome: true,
+      homeOrder: 1,
+    },
+    {
+      slug: "reabilitacija",
+      title: "Reabilitacija",
+      category: "gydymas",
+      summary: "Reabilitacijos paslaugos gyvūnams.",
+      showOnHome: true,
+      homeOrder: 6,
+    },
+    {
+      slug: "chirurgija",
+      title: "Chirurgija",
+      category: "chirurgija",
+      summary: "Sudėtingiausių ligų ir traumų chirurginis gydymas, įvairios operacijos.",
+      showOnHome: true,
+      homeOrder: 2,
+    },
+    {
+      slug: "kraujo-tyrimai",
+      title: "Kraujo tyrimai",
+      category: "tyrimai",
+      summary: "Morfologiniai, biocheminiai ir hormonų tyrimai.",
+      showOnHome: true,
+      homeOrder: 3,
+      homeTitle: "Laboratoriniai tyrimai",
+      homeSummary: "Kraujo (morfologiniai, biocheminiai, hormonų), odos ir šlapimo tyrimai.",
+    },
+    { slug: "odos-tyrimai", title: "Odos tyrimai", category: "tyrimai", summary: "Odos tyrimai klinikoje." },
+    { slug: "slapimo-tyrimai", title: "Šlapimo tyrimai", category: "tyrimai", summary: "Šlapimo tyrimai klinikoje." },
+    { slug: "dnr-profilis", title: "DNR profilio tyrimai", category: "genetika", summary: "Atliekami klinikoje." },
+    {
+      slug: "genetines-ligos",
+      title: "Genetinių ligų tyrimai",
+      category: "genetika",
+      summary: "Bendradarbiaujant su užsienio laboratorijomis.",
+    },
+    {
+      slug: "klubu-displazija",
+      title: "Klubų displazija",
+      category: "genetika",
+      summary: "Klinikinis klubų sąnarių vertinimas.",
+      showOnHome: true,
+      homeOrder: 4,
+      homeTitle: "Klubų ir kelių sąnariai",
+      homeSummary: "Klinikinis klubų displazijos ir kelių sąnarių vertinimas.",
+    },
+    { slug: "keliu-sanariai", title: "Kelių sąnariai", category: "genetika", summary: "Klinikinis kelių sąnarių vertinimas." },
+    {
+      slug: "mikroschemos",
+      title: "Mikroschemos",
+      category: "dokumentai",
+      summary: "Gyvūnų ženklinimas mikroschema.",
+      showOnHome: true,
+      homeOrder: 5,
+      homeTitle: "Mikroschemos ir pasai",
+      homeSummary: "Ženklinimas, tarptautiniai gyvūnų pasai, pažymos ir dokumentų tvarkymas.",
+    },
+    { slug: "pasai", title: "Tarptautiniai pasai", category: "dokumentai", summary: "Gyvūnų pasų išdavimas kelionėms." },
+    { slug: "pazymos", title: "Pažymos ir dokumentai", category: "dokumentai", summary: "Pažymų išdavimas ir dokumentų tvarkymas." },
+    { slug: "vaistai", title: "Vaistai", category: "vaistine", summary: "Augintiniams reikalingi vaistai." },
+    { slug: "papildai", title: "Papildai ir vitaminai", category: "vaistine", summary: "Papildai ir vitaminai augintiniams." },
+    { slug: "pasarai", title: "Ekologiški pašarai", category: "vaistine", summary: "Ekologiški pašarai." },
+    { slug: "higiena", title: "Higienos priemonės", category: "vaistine", summary: "Higienos priemonės augintiniams." },
+  ],
+  specialists: [],
+  showSpecialists: false,
+  prices: [],
+  pricesNote: "Kainas sužinosite paskambinę į kliniką.",
+  reviews: [
+    {
+      author: "John B.",
+      rating: 5,
+      text: "Mums stipriai pagelbejo. Atejom su apsinuodijusiu suniu, dave vaistu, atliko proceduras. Dare kraujo tyrimus. Suo po keliu dienu atsistate ir vel kaip naujas. Rekomenduoju",
+    },
+    {
+      author: "Laura R.",
+      rating: 5,
+      text: "Sekmadienio vakarą, kuomet naminę katytę užpuolė laukinės katės, ieškojau, kas suteiktų konsultaciją telefonu bei skubią pagalbą. Laimei, paskambinau į šią įstaigą, gavau daug naudingų patarimų, rekomendacijų, bendravimas buvo labai šiltas ir nuoširdus. Ačiū! O mūsų katytė po truputį jau sveiksta, jei reiks - kreipsimės į Jūs:)",
+    },
+    {
+      author: "Dainius S.",
+      rating: 5,
+      text: "daktarė Ingrida, dirba labai gerai ir šiltai, jau 2trą savo šunį vedu čia, rekomenduoju visiems, labai geras aptarnavimas ir darbų kokybė, kainos taip pat ne didžiausios.",
+    },
+    {
+      author: "Kristina G.",
+      rating: 5,
+      text: "Mane labai nustebino, kad musu zemeje yra dar tokiu gerasirdziu zmoniu. Dekoju Jiems ir gerbiu uz darba ir pagalba mano kalytei.",
+    },
+    {
+      author: "Justė B.",
+      rating: 5,
+      text: "Puikus elgesys su augintiniais, šiltas ir malonus aptarnavimas 👍🏽",
+    },
+    {
+      author: "Vidija G.",
+      rating: 5,
+      text: "Greitas aptarnavimas, puikūs specialistai!",
+    },
+    {
+      author: "Ieva V.",
+      rating: 5,
+      text: "Labai gera veterinarijos klinika",
+    },
+  ],
+  copy: {
+    servicesPageTitle: "Mūsų paslaugos",
+    servicesPageText: "Konsultacijas ir gydymą parenkame pagal kiekvieno gyvūno individualią situaciją.",
+    contactLead: "Paskambinkite ir suderinsime vizito laiką.",
+    footerText: "Veterinarijos klinika Kaune nuo 2011 metų.",
+  },
+  googleRating: { score: 3.5, count: 33 },
+  showRating: false,
+  googlePlaceId: "ChIJ-1rjQa4Y50YRg0Ef_rnFvU0",
+  brand: {
+    primary: "#0e4c5f",
+    accent: "#2fa56f",
+    logo: `${photo}/logo-mark.png`,
+    logoStyle: "badge",
+  },
+  socials: {
+    facebook: "https://www.facebook.com/veterinarijosklinikapaspuma",
+  },
+};
