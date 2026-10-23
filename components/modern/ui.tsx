@@ -9,6 +9,7 @@ import {
   FlaskConical,
   HeartPulse,
   Pill,
+  ScanLine,
   Scissors,
   Stethoscope,
   Syringe,
@@ -98,6 +99,7 @@ export function Eyebrow({ children, light = false }: { children: ReactNode; ligh
 const iconRules: [RegExp, LucideIcon][] = [
   [/chirurg|operac/, Scissors],
   [/dnr|genet/, Dna],
+  [/tomograf|echo|rentgen|diagnost/, ScanLine],
   [/tyrim|lab/, FlaskConical],
   [/sanar|displaz|kaul/, Activity],
   [/vaist|papild|pasar|higien/, Pill],

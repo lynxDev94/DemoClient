@@ -176,7 +176,7 @@ export function WarmServices({ clinic }: { clinic: Clinic }) {
                   <span className="grid size-14 place-items-center rounded-[18px] bg-secondary text-brand transition-all duration-500 group-hover:-rotate-[8deg] group-hover:bg-accent group-hover:text-accent-foreground">
                     <ModernServiceIcon slug={service.slug} className="size-[26px]" />
                   </span>
-                  <span className="font-serif text-lg font-bold text-[#b49ab9] transition-colors group-hover:text-accent">
+                  <span className="font-serif text-lg font-bold text-[var(--warm-mute)] transition-colors group-hover:text-accent">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </span>
@@ -285,7 +285,7 @@ export function WarmReviews({ clinic }: { clinic: Clinic }) {
     </svg>
   );
   const round =
-    "grid size-[52px] place-items-center rounded-full border-[1.5px] border-[#d9cfdc] bg-white text-foreground transition-colors hover:border-brand hover:bg-brand hover:text-white";
+    "grid size-[52px] place-items-center rounded-full border-[1.5px] border-[var(--warm-edge)] bg-white text-foreground transition-colors hover:border-brand hover:bg-brand hover:text-white";
 
   return (
     <section id="atsiliepimai">
@@ -351,7 +351,7 @@ export function WarmReviews({ clinic }: { clinic: Clinic }) {
                   onClick={() => setPage([dot, dot >= position ? 1 : -1])}
                   className={cn(
                     "h-3 rounded-full transition-all duration-300",
-                    dot === position ? "w-[34px] bg-brand" : "w-3 bg-[#d9cfdc] hover:bg-[#b49ab9]",
+                    dot === position ? "w-[34px] bg-brand" : "w-3 bg-[var(--warm-edge)] hover:bg-[var(--warm-mute)]",
                   )}
                 />
               ))}

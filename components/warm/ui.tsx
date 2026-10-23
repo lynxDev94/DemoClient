@@ -12,7 +12,7 @@ const base =
 const variants = {
   primary: "bg-brand text-white hover:bg-[var(--brand-deep)] hover:text-white",
   accent: "bg-accent text-accent-foreground hover:bg-[color-mix(in_srgb,var(--accent)_85%,black)]",
-  line: "border-[1.5px] border-[#d9cfdc] bg-white text-foreground hover:border-brand hover:text-brand",
+  line: "border-[1.5px] border-[var(--warm-edge)] bg-white text-foreground hover:border-brand hover:text-brand",
 } as const;
 
 /** Pill button link. Lifts on hover. */
@@ -29,7 +29,7 @@ export function WarmButton({
 }) {
   const reduce = useReducedMotion();
   const classes = cn(base, variants[variant], className);
-  const lift = reduce ? undefined : { y: -3, boxShadow: "0 14px 28px rgba(75,42,82,0.22)" };
+  const lift = reduce ? undefined : { y: -3, boxShadow: "0 14px 28px rgba(30,26,20,0.2)" };
   const external = href.startsWith("http");
   if (external || href.startsWith("tel:") || href.startsWith("mailto:")) {
     return (

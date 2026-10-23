@@ -52,7 +52,7 @@ export function WarmServicesPage({ clinic }: { clinic: Clinic }) {
               const href = linked ? serviceHref(clinic.slug, service.slug) : telHref(clinic.phone);
               const row = (
                 <>
-                  <span className="w-[70px] font-serif text-[22px] font-bold text-[#b49ab9] transition-colors group-hover:text-[var(--accent-ink)]">
+                  <span className="w-[70px] font-serif text-[22px] font-bold text-[var(--warm-mute)] transition-colors group-hover:text-[var(--accent-ink)]">
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <span className="flex-1 basis-[260px] font-serif text-[clamp(28px,3.4vw,46px)] leading-[1.05] font-bold">
@@ -61,7 +61,7 @@ export function WarmServicesPage({ clinic }: { clinic: Clinic }) {
                   <span className="flex-[1.3] basis-[320px] text-[17px] leading-relaxed text-muted-foreground">
                     {service.summary}
                   </span>
-                  <span className="grid size-[54px] place-items-center rounded-full border-[1.5px] border-[#d9cfdc] transition-all duration-300 group-hover:translate-x-1.5 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
+                  <span className="grid size-[54px] place-items-center rounded-full border-[1.5px] border-[var(--warm-edge)] transition-all duration-300 group-hover:translate-x-1.5 group-hover:border-brand group-hover:bg-brand group-hover:text-white">
                     <svg aria-hidden="true" viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M5 12h14M13 6l6 6-6 6" />
                     </svg>

@@ -12,7 +12,7 @@ const registry = {
   ernista: () => import("./ernista").then((mod) => mod.clinic),
   "gyvunu-edenas": () => import("./gyvunu-edenas").then((mod) => mod.clinic),
   "pas-puma": () => import("./pas-puma").then((mod) => mod.clinic),
-  "keturios-pedutes": () => import("./keturios-pedutes").then((mod) => mod.clinic),
+  vetamicus: () => import("./vetamicus").then((mod) => mod.clinic),
 } satisfies Record<string, () => Promise<Clinic>>;
 
 export const clinicSlugs = Object.keys(registry);
